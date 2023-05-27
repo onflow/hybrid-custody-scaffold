@@ -3,7 +3,7 @@
 		"AddressUtils": {
 			"source": "./cadence/contracts/flow-utils/AddressUtils.cdc",
 			"aliases": {
-				"emulator": "045a1763c93006ca",
+				"emulator": "f8d6e0586b0a20c7",
 				"mainnet": "a340dc0a4ec828ab",
 				"testnet": "31ad40c07a2a9788"
 			}
@@ -11,7 +11,7 @@
 		"ArrayUtils": {
 			"source": "./cadence/contracts/flow-utils/ArrayUtils.cdc",
 			"aliases": {
-				"emulator": "045a1763c93006ca",
+				"emulator": "f8d6e0586b0a20c7",
 				"mainnet": "a340dc0a4ec828ab",
 				"testnet": "31ad40c07a2a9788"
 			}
@@ -19,21 +19,21 @@
 		"CapabilityFactory": {
 			"source": "./cadence/contracts/hybrid-custody/CapabilityFactory.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
 		"CapabilityFilter": {
 			"source": "./cadence/contracts/hybrid-custody/CapabilityFilter.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
 		"CapabilityProxy": {
 			"source": "./cadence/contracts/hybrid-custody/CapabilityProxy.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
@@ -42,7 +42,7 @@
 		"FTProviderFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/FTProviderFactory.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
@@ -65,14 +65,14 @@
 		"HybridCustody": {
 			"source": "./cadence/contracts/hybrid-custody/HybridCustody.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
 		"MetadataViews": {
 			"source": "./cadence/contracts/standards/MetadataViews.cdc",
 			"aliases": {
-				"emulator": "f669cb8d41ce0c74",
+				"emulator": "f8d6e0586b0a20c7",
 				"mainnet": "1d7e57aa55817448",
 				"testnet": "631e88ae7f1d7c20"
 			}
@@ -80,28 +80,28 @@
 		"NFTCollectionPublicFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/NFTCollectionPublicFactory.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
 		"NFTProviderAndCollectionFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/NFTProviderAndCollectionFactory.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
 		"NFTProviderFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/NFTProviderFactory.cdc",
 			"aliases": {
-				"emulator": "120e725050340cab",
+				"emulator": "f8d6e0586b0a20c7",
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
 		"NonFungibleToken": {
 			"source": "./cadence/contracts/standards/NonFungibleToken.cdc",
 			"aliases": {
-				"emulator": "f669cb8d41ce0c74",
+				"emulator": "f8d6e0586b0a20c7",
 				"mainnet": "1d7e57aa55817448",
 				"testnet": "631e88ae7f1d7c20"
 			}
@@ -109,7 +109,7 @@
 		"StringUtils": {
 			"source": "./cadence/contracts/flow-utils/StringUtils.cdc",
 			"aliases": {
-				"emulator": "045a1763c93006ca",
+				"emulator": "f8d6e0586b0a20c7",
 				"mainnet": "a340dc0a4ec828ab",
 				"testnet": "31ad40c07a2a9788"
 			}
@@ -117,7 +117,7 @@
 		"ViewResolver": {
 			"source": "./cadence/contracts/standards/ViewResolver.cdc",
 			"aliases": {
-				"emulator": "f669cb8d41ce0c74",
+				"emulator": "f8d6e0586b0a20c7",
 				"mainnet": "1d7e57aa55817448",
 				"testnet": "631e88ae7f1d7c20"
 			}
@@ -133,37 +133,14 @@
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
 			"key": "686779d775e5fcbf8d2f4a85cb4c53525d02b7ef53230d180fc16f35d9b7d025"
-		},
-		"example-ft-nft": {
-			"address": "e03daebed8ca0615",
-			"key": "974559417a173911c649c937ee9455056080ad3896d340817a3f62756caea4e2"
-		},
-		"flow-utils": {
-			"address": "045a1763c93006ca",
-			"key": "67da7b73c789700ecf951a0759cc5c26a748ba31e926867993a8d5aa4c67212d"
-		},
-		"hybrid-custody": {
-			"address": "120e725050340cab",
-			"key": "a1dd8986ac3c946b98904075f2c908c835684ddac21edf4c492e477df1a99643"
-		},
-		"standards": {
-			"address": "f669cb8d41ce0c74",
-			"key": "618b83a5903dbdafac072ee73ffd5126c37e592a6bf948068c275fc75a015ce9"
 		}
 	},
 	"deployments": {
 		"emulator": {
-			"standards": [
-				"NonFungibleToken",
-				"MetadataViews",
-				"ViewResolver"
-			],
-			"flow-utils": [
+			"emulator-account": [
 				"AddressUtils",
 				"StringUtils",
-				"ArrayUtils"
-			],
-			"hybrid-custody": [
+				"ArrayUtils",
 				"HybridCustody",
 				"CapabilityProxy",
 				"CapabilityFilter",
@@ -171,10 +148,7 @@
 				"FTProviderFactory",
 				"NFTProviderFactory",
 				"NFTProviderAndCollectionFactory",
-				"NFTCollectionPublicFactory"
-			],
-			"example-ft-nft": [
-				"ExampleNFT",
+				"NFTCollectionPublicFactory",
 				"ExampleToken"
 			]
 		}
