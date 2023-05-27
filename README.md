@@ -89,36 +89,39 @@ flow deploy
 You now have a running emulator instance with all project contracts deployed to `emulator-account`. We know this is the
 account where contracts were deployed because of our `deployments` field in our [flow.json](./flow.json) file:
 
+> :information_source: These contracts are not deployed to a single contract on testnet/mainnet, but are done so here
+> for the sake of simplicity. Refer to contract aliases for contract deployment addresses.
+
 ```json
-{   // ...
+{
     "deployments": {
-		"emulator": {
-            // **NOTE:** These contracts are not deployed to a single contract on testnet/mainnet, but are done so
-            //           here for the sake of simplicity. Refer to contract aliases for contract deployment addresses.
-			"emulator-account": [
-				"AddressUtils",
-				"StringUtils",
-				"ArrayUtils",
-				"HybridCustody",
-				"CapabilityProxy",
-				"CapabilityFilter",
-				"CapabilityFactory",
-				"FTProviderFactory",
-				"NFTProviderFactory",
-				"NFTProviderAndCollectionFactory",
-				"NFTCollectionPublicFactory",
-				"ExampleToken"
-			]
-		}
-	}
+        "emulator": {
+            "emulator-account": [
+                "AddressUtils",
+                "StringUtils",
+                "ArrayUtils",
+                "HybridCustody",
+                "CapabilityProxy",
+                "CapabilityFilter",
+                "CapabilityFactory",
+                "FTProviderFactory",
+                "NFTProviderFactory",
+                "NFTProviderAndCollectionFactory",
+                "NFTCollectionPublicFactory",
+                "ExampleToken"
+            ]
+        }
+    }
 }
 ```
 
 ## 🏎️ Interacting with HybridCustody
 
-Now that the project contracts are deployed on a locally running emulator instance, we can start to interact with them. Let's check out a ***progressive onboarding*** flow.
+Now that the project contracts are deployed on a locally running emulator instance, we can start to interact with them.
+Let's check out a ***progressive onboarding*** flow.
 
-What is ***progressive onboarding***? It's the process of onboarding a new-to-Web3 user on to your application, abstracting away onchain interactions, and on through to Hybrid Custody once they link their accounts
+What is ***progressive onboarding***? It's the process of onboarding a new-to-Web3 user on to your application,
+abstracting away onchain interactions, and on through to Hybrid Custody once they link their accounts
 
 ### Create Dev Account
 
