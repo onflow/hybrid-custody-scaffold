@@ -326,29 +326,21 @@ Pick your path and follow along:
 First, we need to publish a `ProxyAccount` Capability for the parent account to claim, signing here as the child
 account. Provide the `dev` account address as both the factory and filter addresses.
 
-<code>
-
 ```sh
 flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc \
     <PARENT_ADDRESS> <FACTORY_ADDRESS> <FILTER_ADDRESS> \
     --signer child
 ```
 
-</code>
-
 Once published, we sign with the parent account to claim the Capability. Note that the parent can set a `Filter` of its
 own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the feature might be
 useful for custodial wallet providers.
-
-<code>
 
 ```sh
 flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc \
     <CHILD_ADDRESS> <FILTER_ADDRESS?> <FILTER_PATH?> \
     --signer parent
 ```
-
-</code>
 
 After both transactions have been sent, Hybrid Custody has been achieved, giving the parent account access to the child
 account according to the rules defined in the Filter and accessible by the Factories.
@@ -362,8 +354,6 @@ Let's prepare a single multisig transaction that will link the `child ` and `par
 set a `Filter` of its own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the
 feature might be useful for custodial wallet providers. First step is to build the transaction:
 
-<code>
-
 ```sh
 flow transactions build cadence/transactions/hybrid-custody/setup_multi_sig.cdc \
     <PARENT__FILTER_ADDRESS?> <CHILD_ACCOUNT_FACTORY_ADDRESS> <CHILD_ACCOUNT_FILTER_ADDRESS> \
@@ -375,27 +365,17 @@ flow transactions build cadence/transactions/hybrid-custody/setup_multi_sig.cdc 
     --save setup_multi_sig
 ```
 
-</code>
-
 With the transaction built, we need to sign with both signers:
-
-<code>
 
 ```sh
 flow transactions sign setup_multi_sig --signer child --signer parent --filter payload --save setup_multi_sig
 ```
 
-</code>
-
 Lastly, we'll send the signed transaction:
-
-<code>
 
 ```sh
 flow transactions send-signed setup_multi_sig
 ```
-
-</code>
 
 </details>
 
