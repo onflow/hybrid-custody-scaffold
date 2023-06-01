@@ -17,7 +17,7 @@ ___
 This scaffold was created to make starting and exploring a Hybrid Custody project easier for you, and is a simplified template of the
 contents of [@Flowtyio/restricted-child-account](https://github.com/Flowtyio/restricted-child-account)
 
-## 🔨 Getting started
+# 🔨 Getting started
 
 Getting started can feel overwhelming, but we are here for you. Depending on how accustomed you are to Flow, here's a
 list of resources you might find useful:
@@ -43,7 +43,7 @@ list of resources you might find useful:
 - [Flow NFT Catalog](https://www.flow-nft-catalog.com/): list of NFT contracts on Flow, can be a valuable source to
   compose new projects or use as example,
 
-## 📦 Project Structure
+# 📦 Project Structure
 
 Your project comes with some standard folders which have a special purpose:
 
@@ -54,7 +54,7 @@ Your project comes with some standard folders which have a special purpose:
 - `flow.json` configuration file for your project, you can think of it as package.json, but you don't need to worry,
   flow dev command will configure it for you
 
-## 🤔 What is Hybrid Custody?
+# 🤔 What is Hybrid Custody?
 
 > :books: Read the full docs at [developers.flow.com/hybrid-custody](https://developers.flow.com/concepts/hybrid-custody)
 
@@ -71,7 +71,7 @@ the user in a frictionless UX free from transaction prompts.
 1. Once a user returns to the app with a self-custodial wallet, they can authenticate their wallet-managed account in the app, allowing the app to give the user's main account delegated access to the app managed account.
 1. Upon linking, the user's main account - now the "parent" account - adds the app created account - now the "child" account - to a collection of all linked child accounts. At this point, Hybrid Custody is reached
 
-## 👨‍💻 Start Developing
+# 👨‍💻 Start Developing
 
 [Install Flow CLI](https://developers.flow.com/tooling/flow-cli/install)
 
@@ -189,7 +189,7 @@ Lastly, we'll want to make sure this account has enough Flow balance to fund new
  fts cadence/transactions/flow-token/transfer_flow.cdc e03daebed8ca0615 1000.0
 ```
 
-### Walletless Onboarding
+## Walletless Onboarding
 
 Now that we have a funded dev account and we've configured it with the necessary resources & Capabilities we can create
 new accounts on Flow. [Walletless onboarding](./transactions/walletless_onboarding.cdc) is really pretty simple - you're
@@ -249,7 +249,7 @@ You did it - you just completed a walletless onboarding! Recall we:
 The `child` account in this instance would be an app-managed account. Next, we'll simulate the process of your app user
 creating their own wallet-managed account that will be used to manage their hybrid custody account.
 
-### Configure CapabilityFilter & CapabilityFactory Resources
+## Configure CapabilityFilter & CapabilityFactory Resources
 
 As noted in the full docs, the `HybridCustody` contract supports restricted access delegation. This means developers are
 empowered to define limitations on the level of access a parent account can have on an app-managed Hybrid Custody
@@ -288,7 +288,7 @@ accounts.
 
 > :information_source: You can inspect the developer account storage in [FlowView](https://emulator.flowview.app/), a super useful tool! Click on the link and search for the address you want to inspect. At this point, you should see the `AllowAllFilter` and `Manager` resources at their derived paths.
 
-### Create Parent Account
+## Create Parent Account
 
 This step is pretty easy. Simply run:
 
@@ -300,7 +300,7 @@ Name the account `parent` and select `Emulator` as your network. Again, you'll f
 
 In the progressive onboarding flow, this step emulates your user going to a wallet provider and creating self-managed account. This is the account that will share access on the app-managed `child` account.
 
-### Link Parent & Child Accounts
+## Link Parent & Child Accounts
 
 Time to link accounts and achieve Hybrid Custody!
 
@@ -385,8 +385,8 @@ We can validate that the accounts have been linked by running a quick script ret
 flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc
 ```
 
-### Bonus: Blockchain-Native Onboarding
+## Bonus: Blockchain-Native Onboarding
 
 
 
-## 📚 Resources
+# 📚 Resources
