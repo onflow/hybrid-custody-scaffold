@@ -78,9 +78,9 @@ the user in a frictionless UX free from transaction prompts.
 
 From your workspace directory, setup your Flow project from a scaffold
 
-    ```sh
-    flow setup <YOUR_PROJECT_NAME> --scaffold
-    ```
+```sh
+flow setup <YOUR_PROJECT_NAME> --scaffold
+```
 
 You'll be asked to select the scaffold number for this scaffold
     
