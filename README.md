@@ -1,14 +1,13 @@
 # 👋 Welcome Flow Developer!
 
-### TODO:
+<!-- ### TODO: 
 
-- [ ] README
-    - [ ] Interacting with HybridCustody
-    - [ ] Resources
+- [ ] Confirm scaffold number after flow-cli PR
 - [ ] Transfer ownership to @onflow
 - [ ] Submit PR to flow-cli with scaffold info
 - [ ] Update HC docs with Get Started CTA directing to scaffold info
-___
+
+-->
 
 > :information_source: Be sure to check out the [Hybrid Custody
 > docs](https://developers.flow.com/concepts/hybrid-custody) for more info and the [source
@@ -87,7 +86,7 @@ You'll be asked to select the scaffold number for this scaffold
 ✗ Enter the scaffold number:
 ```
     
-Go ahead and enter the scaffold number for Hybrid Custody Project: `[4] Hybrid Custody Project` [TODO - confirm scaffold number after flow-cli PR]
+Go ahead and enter the scaffold number for Hybrid Custody Project: `[4] Hybrid Custody Project`
 
 ```sh
 ✔ Enter the scaffold number: 4
