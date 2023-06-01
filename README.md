@@ -72,6 +72,8 @@ the user in a frictionless UX free from transaction prompts.
 
 # 👨‍💻 Start Developing
 
+> :warning: Note that the contracts in this scaffold are still under development and may undergo breaking changes. You can stay up to date on advancements and changes by following the [source repo](https://github.com/Flowtyio/restricted-child-account).
+
 [Install Flow CLI](https://developers.flow.com/tooling/flow-cli/install)
 
 From your workspace directory, setup your Flow project from a scaffold
