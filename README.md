@@ -152,7 +152,7 @@ abstracting away onchain interactions, and on through to Hybrid Custody once the
 
 > :information_source: Make sure that you've performed the steps above and your emulator is running with contracts deployed.
 
-### Create Dev Account
+## Create Dev Account
 
 There are a number of ways you can create accounts for the purposes of your application. You could use a custodial
 service, craft your own backend account creation and custodial service, or simply run a transaction from an account you
@@ -226,6 +226,11 @@ command and refer to the event emitted in the latest block:
 flow events get flow.AccountCreated
 ```
 
+> :information_source: Your app will want to query for this event from the submitted transaction. Check out [this
+> account creation
+> example](https://github.com/onflow/faucet/blob/045ad28cb9c375871246e40a667dfb62202edcc9/lib/flow/account.ts#L43-L75)
+> using FCL.
+
 Now that we know the new account's address, we can add it to our flow.json. Of course, your app would manage custody
 much more elegantly. Add the following to your flow.json's `accounts` field. Recall the private key we generated
 previously.
@@ -286,7 +291,9 @@ At the end of this, the `dev` account has `CapabilityFilter.AllowAllFilter` and 
 number of `Factory` implementations configured. We'll use Capabilities on each when we link the `child` and `parent`
 accounts.
 
-> :information_source: You can inspect the developer account storage in [FlowView](https://emulator.flowview.app/), a super useful tool! Click on the link and search for the address you want to inspect. At this point, you should see the `AllowAllFilter` and `Manager` resources at their derived paths.
+> :information_source: You can inspect the developer account storage in [FlowView](https://emulator.flowview.app/), a
+> super useful tool! Click on the link and search for the address you want to inspect. At this point, you should see the
+> `AllowAllFilter` and `Manager` resources at their derived paths.
 
 ## Create Parent Account
 
@@ -296,49 +303,64 @@ This step is pretty easy. Simply run:
 flow accounts create # account name: parent
 ```
 
-Name the account `parent` and select `Emulator` as your network. Again, you'll find this account automatically added to your flow.json.
+Name the account `parent` and select `Emulator` as your network. Again, you'll find this account automatically added to
+your flow.json.
 
-In the progressive onboarding flow, this step emulates your user going to a wallet provider and creating self-managed account. This is the account that will share access on the app-managed `child` account.
+In the progressive onboarding flow, this step emulates your user going to a wallet provider and creating self-managed
+account. This is the account that will share access on the app-managed `child` account.
 
 ## Link Parent & Child Accounts
 
 Time to link accounts and achieve Hybrid Custody!
 
-There are two ways we could do this. If we have both accounts sign a single transaction, the link can be done in that one transaction. However, we could also utilize the [`AuthAccount.Inbox`](https://developers.flow.com/cadence/language/accounts#account-inbox) to perform an async account link by first publishing a Capability the parent account later claims.
+There are two ways we could do this. If we have both accounts sign a single transaction, the link can be done in that
+one transaction. However, we could also utilize the
+[`AuthAccount.Inbox`](https://developers.flow.com/cadence/language/accounts#account-inbox) to perform an async account
+link by first publishing a Capability the parent account later claims.
 
 Pick your path and follow along:
 
 <details>
 <summary>Publish & Claim</summary>
 
-First, we need to publish a `ProxyAccount` Capability for the parent account to claim, signing here as the child account. Provide the `dev` account address as both the factory and filter addresses.
+First, we need to publish a `ProxyAccount` Capability for the parent account to claim, signing here as the child
+account. Provide the `dev` account address as both the factory and filter addresses.
 
 <code>
 
 ```sh
-flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc <PARENT_ADDRESS> <FACTORY_ADDRESS> <FILTER_ADDRESS> --signer child
+flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc \
+    <PARENT_ADDRESS> <FACTORY_ADDRESS> <FILTER_ADDRESS> \
+    --signer child
 ```
 
 </code>
 
-Once published, we sign with the parent account to claim the Capability. Note that the parent can set a `Filter` of its own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the feature might be useful for custodial wallet providers.
+Once published, we sign with the parent account to claim the Capability. Note that the parent can set a `Filter` of its
+own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the feature might be
+useful for custodial wallet providers.
 
 <code>
 
 ```sh
-flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc <CHILD_ADDRESS> <FILTER_ADDRESS?> <FILTER_PATH?> --signer parent
+flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc \
+    <CHILD_ADDRESS> <FILTER_ADDRESS?> <FILTER_PATH?> \
+    --signer parent
 ```
 
 </code>
 
-After both transactions have been sent, Hybrid Custody has been achieved, giving the parent account access to the child account according to the rules defined in the Filter and accessible by the Factories.
+After both transactions have been sent, Hybrid Custody has been achieved, giving the parent account access to the child
+account according to the rules defined in the Filter and accessible by the Factories.
 
 </details>
 
 <details>
 <summary>Multisig</summary>
 
-Let's prepare a single multisig transaction that will link the `child ` and `parent` accounts. Note that the parent can set a `Filter` of its own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the feature might be useful for custodial wallet providers. First step is to build the transaction:
+Let's prepare a single multisig transaction that will link the `child ` and `parent` accounts. Note that the parent can
+set a `Filter` of its own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the
+feature might be useful for custodial wallet providers. First step is to build the transaction:
 
 <code>
 
@@ -382,11 +404,63 @@ flow transactions send-signed setup_multi_sig
 We can validate that the accounts have been linked by running a quick script returning `parent`'s linked Hybrid Custody accounts.
 
 ```sh
-flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc
+flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PARENT_ADDRESS>
 ```
 
 ## Bonus: Blockchain-Native Onboarding
 
+Walletless onboarding lends a fantastic user experience for Web3 newcomers, but what about crypto-native users? 
 
+Blockchain-native onboarding enables a user to log in with their wallet-managed account and link with an app-managed account from the get go. This means the user starts your app with a Hybrid Custody account, enabling them to manage accessible in-app assets from their main account while maintaining a seamless in-app experience.
+
+> :warning: Before we can do submit the blockchain-native onboarding transaction, we need to make sure the `CapabilityFilter` and `CapabilityFactory` resources are configured properly. If you haven't already, check out [that step above](#configure-capabilityfilter--capabilityfactory-resources) before continuing.
+>
+> You'll also want to ensure you've [created a `parent` account](#create-parent-account) to link to.
+
+Now we can run the blockchain-native onboarding transaction, signing as the `dev` and `parent` accounts.
+
+First we generate a public/private key pair to assign to the account we'll create in the transaction.
+
+```sh
+flow keys generate
+```
+
+You'll want to copy the public key as an argument and build the following multisig transaction:
+
+```sh
+flow transactions build cadence/transactions/hybrid-custody/onboarding/blockchain_native.cdc \
+    <PUBLIC_KEY> <INITIAL_FUNDING_AMOUNT> <FACTORY_ADDRESS> <FILTER_ADDRESS> \
+    --proposer dev \
+    --payer dev \
+    --authorizer parent \
+    --authorizer dev \
+    --filter payload \
+    --save blockchain_native
+```
+
+Then we need to sign that transaction:
+
+```sh
+flow transactions sign blockchain_native --signer parent --signer dev --filter payload --save blockchain_native
+```
+
+And finally, send the signed transaction
+
+```sh
+flow transactions send-signed blockchain_native
+```
+
+You'll see a number of events emitted including account creation and account linking events. To validate the parent has the child account added, let's query against the parent account
+
+```sh
+flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PARENT_ADDRESS>
+```
+
+If you ran through both onboarding tracks, you should see two addresses returned. Otherwise, just the one created and linked in the blockchain-native transaction will be present.
 
 # 📚 Resources
+
+- [Full Hybrid Custody docs](https://developers.flow.com/concepts/hybrid-custody)
+- [Full contract repo](https://github.com/Flowtyio/restricted-child-account)
+- [FLIP - AuthAccount Capabilities Management Standard #72](https://github.com/onflow/flips/pull/72)
+- [#hybrid-custody Discord channel](https://discord.com/channels/613813861610684416/1087374662100602920)
