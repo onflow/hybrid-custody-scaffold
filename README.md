@@ -11,10 +11,12 @@
 
 > :information_source: Be sure to check out the [Hybrid Custody
 > docs](https://developers.flow.com/concepts/hybrid-custody) for more info and the [source
-> repo](https://github.com/Flowtyio/restricted-child-account) for the full code and contribution history.
+> repo](https://github.com/Flowtyio/restricted-child-account) for the full code and contribution history. If you run
+> into any issues with this scaffold, please create an issue
+> [here](https://github.com/sisyphusSmiling/hybrid-custody-scaffold)
 
 This scaffold was created to make starting and exploring a Hybrid Custody project easier for you, and is a simplified template of the
-contents of [@Flowtyio/restricted-child-account](https://github.com/Flowtyio/restricted-child-account)
+contents in [@Flowtyio/restricted-child-account](https://github.com/Flowtyio/restricted-child-account)
 
 # 🔨 Getting started
 
@@ -50,8 +52,7 @@ Your project comes with some standard folders which have a special purpose:
     - `contracts/` location for Cadence contracts go in this folder
     - `scripts/` location for Cadence scripts goes here
     - `transactions/` location for Cadence transactions goes in this folder
-- `flow.json` configuration file for your project, you can think of it as package.json, but you don't need to worry,
-  flow dev command will configure it for you
+- `flow.json` configuration file for your project, you can think of it as package.json. We'll dig more into this in a bit.
 
 # 🤔 What is Hybrid Custody?
 
@@ -61,14 +62,14 @@ The Hybrid Custody model on Flow enables developers to provide seamless onboardi
 simultaneously empowering users with real ownership and self-sovereignty. With this new custodial model, developers can
 deliver the benefits of both app and self-custody in a unified experience.
 
-Hybrid Custody grants users full access to their linked child accounts without needing to interface with the child
+Hybrid Custody grants users access to their linked child accounts without needing to interface with the child
 account's custodial app, and the custodial app can interact with the relevant assets in the child account on behalf of
 the user in a frictionless UX free from transaction prompts.
 
 ## 🧭 The Path to Hybrid Custody
 1. The app creates, funds, and manages access to a Flow account initialized on user onboarding. This enables the app to abstract away the complexities of interacting with smart contract powered applications, and focus on creating slick user experiences behind familiar Web2 authentication and fiat denominated payments.
-1. Once a user returns to the app with a self-custodial wallet, they can authenticate their wallet-managed account in the app, allowing the app to give the user's main account delegated access to the app managed account.
-1. Upon linking, the user's main account - now the "parent" account - adds the app created account - now the "child" account - to a collection of all linked child accounts. At this point, Hybrid Custody is reached
+1. Once a user returns to the app with a self-custodial wallet, they can authenticate their wallet-managed account in the app, allowing the app to give the user's main account delegated access to the app managed account (albeit with some developer-defined restrictions).
+1. Upon linking, the user's main account - now the "parent" account - adds the app created account - now the "child" account - to a collection of all linked child accounts. At this point, Hybrid Custody is reached!
 
 # 👨‍💻 Start Developing
 
@@ -149,7 +150,7 @@ Now that the project contracts are deployed on a locally running emulator instan
 Let's check out a ***progressive onboarding*** flow.
 
 What is ***progressive onboarding***? It's the process of onboarding a new-to-Web3 user on to your application,
-abstracting away onchain interactions, and on through to Hybrid Custody once they link their accounts
+abstracting away onchain interactions, and on through to Hybrid Custody once they link their accounts.
 
 > :information_source: Make sure that you've performed the steps above and your emulator is running with contracts deployed.
 
@@ -192,8 +193,8 @@ Lastly, we'll want to make sure this account has enough Flow balance to fund new
 
 ## Walletless Onboarding
 
-Now that we have a funded dev account and we've configured it with the necessary resources & Capabilities we can create
-new accounts on Flow. [Walletless onboarding](./transactions/walletless_onboarding.cdc) is really pretty simple - you're
+Now that we have a funded dev account and we've configured it with the necessary resources & Capabilities, we can create
+new app-controlled accounts on Flow. [Walletless onboarding](./transactions/walletless_onboarding.cdc) is really pretty simple - you're
 creating an account, funding its creation and taking care custody on behalf of your user.
 
 But first, we'll need to generate the key to add to the account.
@@ -243,7 +244,9 @@ previously.
 }
 ```
 
-You did it - you just completed a walletless onboarding! Recall we:
+You did it - you just completed walletless onboarding!
+
+Recall we:
 
 1. Generated a public/private key pair
 1. Submitted a transaction that:
@@ -252,14 +255,15 @@ You did it - you just completed a walletless onboarding! Recall we:
     1. Added initial funds to the new account
 1. Custodied the corresponding private key
 
-The `child` account in this instance would be an app-managed account. Next, we'll simulate the process of your app user
-creating their own wallet-managed account that will be used to manage their hybrid custody account.
+The `child` account in this instance would be an app-managed account. Next, we'll simulate the process of your app's
+user creating their own wallet-managed account that will be linked to the account we just created to achieve Hybrid
+Custody. But first we need to prepare the `dev` account.
 
 ## Configure CapabilityFilter & CapabilityFactory Resources
 
 As noted in the full docs, the `HybridCustody` contract supports restricted access delegation. This means developers are
 empowered to define limitations on the level of access a parent account can have on an app-managed Hybrid Custody
-account.
+accounts.
 
 Constructs in `CapabilityFilter` and `CapabilityFactory` contracts are utilized to define and enforce the Capability
 Types accessible from linked child accounts. The simplest understanding of their respective roles is that a `Filter`
@@ -269,12 +273,12 @@ from an account.
 For concrete examples of each, see [`AllowlistFilter`](./cadence/contracts/hybrid-custody/CapabilityFilter.cdc) and
 [`NFTCollectionPublicFactory`](./cadence/contracts/hybrid-custody/factories/NFTCollectionPublicFactory.cdc)
 
-To learn more about all these components, see the [Account Model
+> :information_source: To learn more about all these components, see the [Account Model
 section](https://developers.flow.com/concepts/hybrid-custody/guides/account-model) of the full docs.
 
 Before linking the `child` & `parent` accounts, we'll need to first configure the `CapabilityFilter` and
-`CapabilityFactory` resources. We'll configure an `AllowAllFilter`, but consider `AllowlistFilter` and `DenylistFilter`
-- or define your own - if you'd like to enforce restrictions on allowable Types.
+`CapabilityFactory` resources. We'll configure an `AllowAllFilter`, but consider `AllowlistFilter` and
+`DenylistFilter`(or define your own) if you'd like to enforce restrictions on allowable Types.
 
 ```sh
 flow transactions send cadence/transactions/filter/setup_allow_all.cdc --signer dev
@@ -337,8 +341,10 @@ Once published, we sign with the parent account to claim the Capability. Note th
 own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the feature might be
 useful for custodial wallet providers.
 
+Let's now run the transaction, signing as the `parent` account to claim the 
+
 ```sh
-flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc \
+flow transactions send cadence/transactions/hybrid-custody/reddem_account.cdc \
     <CHILD_ADDRESS> <FILTER_ADDRESS?> <FILTER_PATH?> \
     --signer parent
 ```
@@ -353,7 +359,9 @@ account according to the rules defined in the Filter and accessible by the Facto
 
 Let's prepare a single multisig transaction that will link the `child ` and `parent` accounts. Note that the parent can
 set a `Filter` of its own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the
-feature might be useful for custodial wallet providers. First step is to build the transaction:
+feature might be useful for custodial wallet providers.
+
+First step is to build the transaction:
 
 ```sh
 flow transactions build cadence/transactions/hybrid-custody/setup_multi_sig.cdc \
@@ -380,9 +388,12 @@ flow transactions send-signed setup_multi_sig
 
 </details>
 
-> :information_source: Again, you're encouraged to inspect account storage using [FlowView](https://emulator.flowview.app/). It can be helpful to understand the components involved in making Hybrid Custody function.
+> :information_source: Again, you're encouraged to inspect account storage using
+> [FlowView](https://emulator.flowview.app/). It can be helpful to understand the components involved in making Hybrid
+> Custody function.
 
-We can validate that the accounts have been linked by running a quick script returning `parent`'s linked Hybrid Custody accounts.
+We can validate that the accounts have been linked by running a quick script returning `parent`'s linked Hybrid Custody
+accounts.
 
 ```sh
 flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PARENT_ADDRESS>
@@ -392,9 +403,13 @@ flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PAR
 
 Walletless onboarding lends a fantastic user experience for Web3 newcomers, but what about crypto-native users? 
 
-Blockchain-native onboarding enables a user to log in with their wallet-managed account and link with an app-managed account from the get go. This means the user starts your app with a Hybrid Custody account, enabling them to manage accessible in-app assets from their main account while maintaining a seamless in-app experience.
+Blockchain-native onboarding enables a user to log in with their wallet-managed account and link with an app-managed
+account from the get go. This means the user starts your app with a Hybrid Custody account, enabling them to manage
+accessible in-app assets from their main account while maintaining a seamless in-app experience.
 
-> :warning: Before we can do submit the blockchain-native onboarding transaction, we need to make sure the `CapabilityFilter` and `CapabilityFactory` resources are configured properly. If you haven't already, check out [that step above](#configure-capabilityfilter--capabilityfactory-resources) before continuing.
+> :warning: Before we can submit the blockchain-native onboarding transaction, we need to make sure the
+> `CapabilityFilter` and `CapabilityFactory` resources are configured properly. If you haven't already, check out [that
+> step above](#configure-capabilityfilter--capabilityfactory-resources) before continuing.
 >
 > You'll also want to ensure you've [created a `parent` account](#create-parent-account) to link to.
 
@@ -431,13 +446,15 @@ And finally, send the signed transaction
 flow transactions send-signed blockchain_native
 ```
 
-You'll see a number of events emitted including account creation and account linking events. To validate the parent has the child account added, let's query against the parent account
+You'll see a number of events emitted including account creation and account linking events. To validate the parent has
+the child account added, let's query against the parent account
 
 ```sh
 flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PARENT_ADDRESS>
 ```
 
-If you ran through both onboarding tracks, you should see two addresses returned. Otherwise, just the one created and linked in the blockchain-native transaction will be present.
+If you ran through both onboarding tracks, you should see two addresses returned. Otherwise, just the one created and
+linked in the blockchain-native transaction will be present.
 
 # 📚 Resources
 
