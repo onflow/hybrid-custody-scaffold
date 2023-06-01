@@ -184,7 +184,7 @@ If you take a look at your [flow.json](./flow.json), you should see the new acco
 
 Lastly, we'll want to make sure this account has enough Flow balance to fund new account creation. The
 `emulator-account` is initialized with a sizable balance which we can transfer to the `dev` account - let's transfer
-100.0 $FLOW:
+1000.0 $FLOW:
 
 ```sh
  fts cadence/transactions/flow-token/transfer_flow.cdc e03daebed8ca0615 1000.0
