@@ -13,7 +13,7 @@
 > docs](https://developers.flow.com/concepts/hybrid-custody) for more info and the [source
 > repo](https://github.com/Flowtyio/restricted-child-account) for the full code and contribution history. If you run
 > into any issues with this scaffold, please create an issue
-> [here](https://github.com/sisyphusSmiling/hybrid-custody-scaffold)
+> [here](https://github.com/onflow/hybrid-custody-scaffold)
 
 This scaffold was created to make starting and exploring a Hybrid Custody project easier for you, and is a simplified template of the
 contents in [@Flowtyio/restricted-child-account](https://github.com/Flowtyio/restricted-child-account)
