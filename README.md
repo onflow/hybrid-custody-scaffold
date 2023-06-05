@@ -1,22 +1,22 @@
 # 👋 Welcome Flow Developer!
 
-<!-- ### TODO: 
+<!-- ### Contribution Checklist
 
-- [ ] Confirm scaffold number after flow-cli PR
-- [ ] Transfer ownership to @onflow
-- [ ] Submit PR to flow-cli with scaffold info
-- [ ] Update HC docs with Get Started CTA directing to scaffold info
+- [ ] Ensure contents are in sync with source repo: https://github.com/onflow/hybrid-custody
+- [ ] Update the commit hash in @onflow/flow-cli/scaffolds.json: https://github.com/onflow/flow-cli/blob/master/scaffolds.json
 
 -->
 
 > :information_source: Be sure to check out the [Hybrid Custody
 > docs](https://developers.flow.com/concepts/hybrid-custody) for more info and the [source
-> repo](https://github.com/Flowtyio/restricted-child-account) for the full code and contribution history. If you run
+> repo](https://github.com/onflow/hybrid-custody) for the full code and contribution history. If you run
 > into any issues with this scaffold, please create an issue
 > [here](https://github.com/onflow/hybrid-custody-scaffold)
 
-This scaffold was created to make starting and exploring a Hybrid Custody project easier for you, and is a simplified template of the
-contents in [@Flowtyio/restricted-child-account](https://github.com/Flowtyio/restricted-child-account)
+This scaffold was created to make starting and exploring a Hybrid Custody project easier for you, and is a simplified
+template of the contents in [@onflow/hybrid-custody](https://github.com/onflow/hybrid-custody).
+If building on these contracts, you might consider using [Git
+Submodules](https://github.blog/2016-02-01-working-with-submodules/) to ensure your dependencies remain up to date.
 
 # 🔨 Getting started
 
@@ -67,13 +67,20 @@ account's custodial app, and the custodial app can interact with the relevant as
 the user in a frictionless UX free from transaction prompts.
 
 ## 🧭 The Path to Hybrid Custody
-1. The app creates, funds, and manages access to a Flow account initialized on user onboarding. This enables the app to abstract away the complexities of interacting with smart contract powered applications, and focus on creating slick user experiences behind familiar Web2 authentication and fiat denominated payments.
-1. Once a user returns to the app with a self-custodial wallet, they can authenticate their wallet-managed account in the app, allowing the app to give the user's main account delegated access to the app managed account (albeit with some developer-defined restrictions).
-1. Upon linking, the user's main account - now the "parent" account - adds the app created account - now the "child" account - to a collection of all linked child accounts. At this point, Hybrid Custody is reached!
+1. The app creates, funds, and manages access to a Flow account initialized on user onboarding. This enables the app to
+   abstract away the complexities of interacting with smart contract powered applications, and focus on creating slick
+   user experiences behind familiar Web2 authentication and fiat denominated payments.
+1. Once a user returns to the app with a self-custodial wallet, they can authenticate their wallet-managed account in
+   the app, allowing the app to give the user's main account delegated access to the app managed account (albeit with
+   some developer-defined restrictions).
+1. Upon linking, the user's main account - now the "parent" account - adds the app created account - now the "child"
+   account - to a collection of all linked child accounts. At this point, Hybrid Custody is reached!
 
 # 👨‍💻 Start Developing
 
-> :warning: Note that the contracts in this scaffold are still under development and may undergo breaking changes. You can stay up to date on advancements and changes by following the [source repo](https://github.com/Flowtyio/restricted-child-account).
+> :warning: Note that the contracts in this scaffold are still under development and may undergo breaking changes. You
+> can stay up to date on advancements and changes by following the [source
+> repo](https://github.com/onflow/hybrid-custody).
 
 [Install Flow CLI](https://developers.flow.com/tooling/flow-cli/install)
 
@@ -459,6 +466,5 @@ linked in the blockchain-native transaction will be present.
 # 📚 Resources
 
 - [Full Hybrid Custody docs](https://developers.flow.com/concepts/hybrid-custody)
-- [Full contract repo](https://github.com/Flowtyio/restricted-child-account)
-- [FLIP - AuthAccount Capabilities Management Standard #72](https://github.com/onflow/flips/pull/72)
+- [Full Hybrid Custody repo](https://github.com/onflow/hybrid-custody)
 - [#hybrid-custody Discord channel](https://discord.com/channels/613813861610684416/1087374662100602920)
