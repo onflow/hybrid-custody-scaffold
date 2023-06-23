@@ -134,7 +134,7 @@ account where contracts were deployed because of our `deployments` field in our 
                 "StringUtils",
                 "ArrayUtils",
                 "HybridCustody",
-                "CapabilityProxy",
+                "CapabilityDelegator",
                 "CapabilityFilter",
                 "CapabilityFactory",
                 "FTProviderFactory",
@@ -335,7 +335,7 @@ Pick your path and follow along:
 <details>
 <summary>Publish & Claim</summary>
 
-First, we need to publish a `ProxyAccount` Capability for the parent account to claim, signing here as the child
+First, we need to publish an `OwnedAccount` Capability for the parent account to claim, signing here as the child
 account. Provide the `dev` account address as both the factory and filter addresses.
 
 ```sh
