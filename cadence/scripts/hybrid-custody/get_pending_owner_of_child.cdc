@@ -5,5 +5,5 @@ pub fun main(addr: Address): Address? {
     let o = acct.borrow<&HybridCustody.OwnedAccount>(from: HybridCustody.OwnedAccountStoragePath)
         ?? panic("owned account missing")
     
-    return o.getOwner()
+    return o.getPendingOwner()
 }
