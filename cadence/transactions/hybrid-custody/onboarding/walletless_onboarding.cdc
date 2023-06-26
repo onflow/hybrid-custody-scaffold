@@ -15,7 +15,7 @@ import "FlowToken"
 /// account creation & optional funding.
 ///
 /// For more examples like this, check out the following repo:
-/// https://github.com/flowtyio/restricted-child-account
+/// https://github.com/onflow/hybrid-custody
 ///
 transaction(pubKey: String, initialFundingAmt: UFix64) {
 	
@@ -26,7 +26,7 @@ transaction(pubKey: String, initialFundingAmt: UFix64) {
 		//
 		// Create the child account, funding via the signer
 		let newAccount = AuthAccount(payer: signer)
-		// Create a public key for the proxy account from string value in the provided arg
+		// Create a public key for the new account from string value in the provided arg
 		// **NOTE:** You may want to specify a different signature algo for your use case
 		let key = PublicKey(
 			publicKey: pubKey.decodeHex(),
