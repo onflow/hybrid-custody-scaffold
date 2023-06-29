@@ -540,7 +540,8 @@ via the `CapabilityFactory.Manager`, but the same pattern could be used to deleg
 
 # Recap
 
-After all of this, you've navigated through creating an app-custodied account, prepared filter rules, linked parent and child accounts to achieve Hybrid Custody, and finally delegated a private Capability!
+After all of this, you've navigated through creating an app-custodied account, prepared filter rules, linked parent and
+child accounts to achieve Hybrid Custody, and finally delegated a private Capability!
 
 ![Hybrid Custody Low-Level](./resources/hybrid_custody_low_level.png)
 
@@ -552,7 +553,8 @@ As an app developer, you really only need to be concerned with the app-custodied
 (publish & claim or multisig). Once linked, the assets you provide access to in the child account may change, but
 properly installed filter rules will ensure the user's access to underlying storage is restricted.
 
-The great news is that by enabling Hybrid Custody standard resources used in your app can be leveraged across the whole ecosystem while you can focus on delivering stellar in-app experiences! 
+The great news is that by enabling Hybrid Custody, standard resources used in your app can be leveraged across the whole
+ecosystem while you can focus on delivering stellar in-app experiences! 
 
 # 📚 Resources
 
