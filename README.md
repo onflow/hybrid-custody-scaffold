@@ -13,9 +13,11 @@
 > into any issues with this scaffold, please create an issue
 > [here](https://github.com/onflow/hybrid-custody-scaffold)
 
-This scaffold was created to make starting and exploring a Hybrid Custody project easier for you, and is a simplified
-template of the contents in [@onflow/hybrid-custody](https://github.com/onflow/hybrid-custody).
-If building on these contracts, you might consider using [Git
+This scaffold was created to help app developers get started building and exploring a Hybrid Custody project. In this
+scaffold, you'll find a simplified template of the contents in
+[@onflow/hybrid-custody](https://github.com/onflow/hybrid-custody).
+
+If building a production system on these contracts, you might consider using [Git
 Submodules](https://github.blog/2016-02-01-working-with-submodules/) to ensure your dependencies remain up to date.
 
 # 🔨 Getting started
@@ -62,11 +64,14 @@ The Hybrid Custody model on Flow enables developers to provide seamless onboardi
 simultaneously empowering users with real ownership and self-sovereignty. With this new custodial model, developers can
 deliver the benefits of both app and self-custody in a unified experience.
 
+![Hybrid Custody High-Level](./resources/hybrid_custody_high_level.png)
+
 Hybrid Custody grants users access to their linked child accounts without needing to interface with the child
 account's custodial app, and the custodial app can interact with the relevant assets in the child account on behalf of
 the user in a frictionless UX free from transaction prompts.
 
 ## 🧭 The Path to Hybrid Custody
+
 1. The app creates, funds, and manages access to a Flow account initialized on user onboarding. This enables the app to
    abstract away the complexities of interacting with smart contract powered applications, and focus on creating slick
    user experiences behind familiar Web2 authentication and fiat denominated payments.
@@ -140,8 +145,7 @@ account where contracts were deployed because of our `deployments` field in our 
                 "FTProviderFactory",
                 "NFTProviderFactory",
                 "NFTProviderAndCollectionFactory",
-                "NFTCollectionPublicFactory",
-                "ExampleToken"
+                "NFTCollectionPublicFactory"
             ]
         }
     }
@@ -201,8 +205,8 @@ Lastly, we'll want to make sure this account has enough Flow balance to fund new
 ## Walletless Onboarding
 
 Now that we have a funded dev account and we've configured it with the necessary resources & Capabilities, we can create
-new app-controlled accounts on Flow. [Walletless onboarding](./transactions/walletless_onboarding.cdc) is really pretty simple - you're
-creating an account, funding its creation and taking care custody on behalf of your user.
+new app-controlled accounts on Flow. [Walletless onboarding](./transactions/walletless_onboarding.cdc) is really pretty
+simple - you're creating an account, funding its creation and taking care of custody on behalf of your user.
 
 But first, we'll need to generate the key to add to the account.
 
@@ -224,8 +228,8 @@ flow transactions send cadence/transactions/hybrid-custody/onboarding/walletless
 > :information_source: If you need testnet $FLOW, check out the [testnet faucet](https://testnet-faucet.onflow.org/)
 > :potable_water:
 
-At the end of this transaction, a new account will be created with the provided public key added at full weight
-(1000.0).
+At the end of this transaction, a new account will be created with the provided public key added at [full
+weight](https://developers.flow.com/concepts/start-here/accounts-and-keys#weighted-keys) (1000.0).
 
 Time to figure out the address of the account we just created. A number of events will be emitted, including
 `flow.AccountsCreated`. You can either look for this event manually in your terminal, or you can run the following
@@ -238,7 +242,7 @@ flow events get flow.AccountCreated
 > :information_source: Your app will want to query for this event from the submitted transaction. Check out [this
 > account creation
 > example](https://github.com/onflow/faucet/blob/045ad28cb9c375871246e40a667dfb62202edcc9/lib/flow/account.ts#L43-L75)
-> using FCL.
+> using FCL for more context on creating a new account & retrieving its address.
 
 Now that we know the new account's address, we can add it to our flow.json. Of course, your app would manage custody
 much more elegantly. Add the following to your flow.json's `accounts` field. Recall the private key we generated
@@ -283,12 +287,30 @@ For concrete examples of each, see [`AllowlistFilter`](./cadence/contracts/hybri
 > :information_source: To learn more about all these components, see the [Account Model
 section](https://developers.flow.com/concepts/hybrid-custody/guides/account-model) of the full docs.
 
-Before linking the `child` & `parent` accounts, we'll need to first configure the `CapabilityFilter` and
-`CapabilityFactory` resources. We'll configure an `AllowAllFilter`, but consider `AllowlistFilter` and
-`DenylistFilter`(or define your own) if you'd like to enforce restrictions on allowable Types.
+Before linking the `child` & `parent` accounts, we'll need to first configure the `CapabilityFilter.Filter` and
+`CapabilityFactory.Manager` resources. These will define accessible types and access patterns (respectively) from the
+child account. We'll configure an `AllowlistFilter`, but consider `AllowAllFilter` and `DenylistFilter` are other
+pre-built options if you'd like to enforce restrictions on allowable Types, your you can roll you own!
+
+> :warning: Filters are important as they restrict the scope of access a parent account can have on a child account.
+> Sharing account access comes with technical, business and regulatory risks that devs should be careful to mitigate by
+> scoping access to the minimum necessary ([Principle of Least
+> Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)). The types you include in your filter will
+> vary according to your use case, but most apps will be well served by allowing NFT collection access demonstrated in
+> the following transaction.
+
+First, we'll setup the `AllowlistFilter` in our `dev` account:
 
 ```sh
-flow transactions send cadence/transactions/filter/setup_allow_all.cdc --signer dev
+flow transactions send cadence/transactions/filter/allow/setup.cdc --signer dev
+```
+
+Then we'll add the ExampleNFT Collection type to the `AllowlistFilter` we just configured by providing a type identifier:
+
+```sh
+flow transactions send cadence/transactions/filter/allow/add_type_to_list.cdc \
+    A.f8d6e0586b0a20c7.ExampleNFT.Collection \
+    --signer dev
 ```
 
 Next, we'll configure a `CapabilityFactory.Manager`. The transaction we're about to run confures a `Manager` and adds a
@@ -330,7 +352,22 @@ one transaction. However, we could also utilize the
 [`AuthAccount.Inbox`](https://developers.flow.com/cadence/language/accounts#account-inbox) to perform an async account
 link by first publishing a Capability the parent account later claims.
 
-Pick your path and follow along:
+> :information_source: As the app developer, you can configure a `Display` view when configuring and/or linking a child
+> account. This enables easy identification of the child account's association in the parent account's wallet. However
+> mechanisms to authenticate child account origins are in discussion, and until then wallet providers & users should
+> beware that child account metadata is a matter of convenience. Associated metadata is not authenticated or
+> immutable.
+
+Before continuing, the `OwnedAccount` will need to be configured in the app-managed account. Let's do so now,
+associating a `MetadataViews.Display` in the process:
+
+```sh
+flow transactions send cadence/transactions/hybrid-custody/setup_owned_account_with_display.cdc \
+    <NAME> <DESCRIPTION> <THUMBNAIL_URL> \
+    --signer child
+```
+
+Now we can begin linking accounts. Pick your path and follow along:
 
 <details>
 <summary>Publish & Claim</summary>
@@ -340,8 +377,8 @@ account. Provide the `dev` account address as both the factory and filter addres
 
 ```sh
 flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc \
-    <PARENT_ADDRESS> <FACTORY_ADDRESS> <FILTER_ADDRESS> \
-    --signer child
+  <PARENT_ADDRESS> <FACTORY_ADDRESS> <FILTER_ADDRESS> \
+  --signer child
 ```
 
 Once published, we sign with the parent account to claim the Capability. Note that the parent can set a `Filter` of its
@@ -351,7 +388,7 @@ useful for custodial wallet providers.
 Let's now run the transaction, signing as the `parent` account to claim the 
 
 ```sh
-flow transactions send cadence/transactions/hybrid-custody/reddem_account.cdc \
+flow transactions send cadence/transactions/hybrid-custody/redeem_account.cdc \
     <CHILD_ADDRESS> <FILTER_ADDRESS?> <FILTER_PATH?> \
     --signer parent
 ```
@@ -406,7 +443,7 @@ accounts.
 flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PARENT_ADDRESS>
 ```
 
-## Bonus: Blockchain-Native Onboarding
+## Blockchain-Native Onboarding
 
 Walletless onboarding lends a fantastic user experience for Web3 newcomers, but what about crypto-native users? 
 
@@ -462,6 +499,62 @@ flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PAR
 
 If you ran through both onboarding tracks, you should see two addresses returned. Otherwise, just the one created and
 linked in the blockchain-native transaction will be present.
+
+## Sharing Arbitrary Capabilities
+
+As we saw above, `CapabilityFactory` defines access patterns to retrieve castable Capabilities from accounts. However,
+your app may require sharing arbitrary Capabilities with a parent account that do not need to be casted. In this case,
+you can leverage the `CapabilityDelegator` configured in the linking process to share generic Capabilities with a parent
+account.
+
+You can think of a `Delegator` as bucket to place generic Capabilities you want to share from child to parent account.
+It's worth noting that each parent of a `ChildAccount` has a partitioned `Delegator` as determined by the paths the
+underlying `Delegator` is stored and linked, derived by the parent's address.
+
+First, let's configure an ExampleNFT Collection in the child account so we can later share a Capability to it with the
+linked parent:
+
+```sh
+flow transactions send cadence/transactions/example-nft/setup_full.cdc --signer child
+```
+
+We can now run a transaction that will add a private ExampleNFT Provider Capability into the `CapabilityDelegator` shared
+with the parent we linked above:
+
+```sh
+flow transactions send cadence/transactions/delegator/add_private_nft_collection.cdc <PARENT_ADDRESS> --signer child
+```
+
+> :information_source: If this was your app, you'd want to replace the Capability in the transaction we just ran with
+> your app-specific Capability.
+
+Now we can query the private Capability we added to the delegator:
+
+```sh
+flow scripts execute cadence/scripts/delegator/get_all_private_caps.cdc <PARENT_ADDRESS> <CHILD_ADDRESS>
+```
+
+You should see the ExampleNFT Capability returned, letting you know the Capability was successfully added as a private
+Capability in the `Delegator` partitioned for the parent account. In this case, the Capability was already accessible
+via the `CapabilityFactory.Manager`, but the same pattern could be used to delegate any other Capability.
+
+# Recap
+
+After all of this, you've navigated through creating an app-custodied account, prepared filter rules, linked parent and
+child accounts to achieve Hybrid Custody, and finally delegated a private Capability!
+
+![Hybrid Custody Low-Level](./resources/hybrid_custody_low_level.png)
+
+Zooming out, this is the map of all you've configured. If your emulator is still running, you can inspect each account
+using [FlowView](https://emulator.flowview.app/) to see each of the resources pictured above in their respective
+accounts.
+
+As an app developer, you really only need to be concerned with the app-custodied account and the linking process
+(publish & claim or multisig). Once linked, the assets you provide access to in the child account may change, but
+properly installed filter rules will ensure the user's access to underlying storage is restricted.
+
+The great news is that by enabling Hybrid Custody, standard resources used in your app can be leveraged across the whole
+ecosystem while you can focus on delivering stellar in-app experiences! 
 
 # 📚 Resources
 

@@ -16,6 +16,13 @@
 				"testnet": "31ad40c07a2a9788"
 			}
 		},
+		"CapabilityDelegator": {
+			"source": "./cadence/contracts/hybrid-custody/CapabilityDelegator.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testnet": "96b15ff6dfde11fe"
+			}
+		},
 		"CapabilityFactory": {
 			"source": "./cadence/contracts/hybrid-custody/CapabilityFactory.cdc",
 			"aliases": {
@@ -30,15 +37,12 @@
 				"testnet": "96b15ff6dfde11fe"
 			}
 		},
-		"CapabilityDelegator": {
-			"source": "./cadence/contracts/hybrid-custody/CapabilityDelegator.cdc",
+		"ExampleNFT": {
+			"source": "./cadence/contracts/standards/ExampleNFT.cdc",
 			"aliases": {
-				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"emulator": "f8d6e0586b0a20c7"
 			}
 		},
-		"ExampleNFT": "./cadence/contracts/standards/ExampleNFT.cdc",
-		"ExampleToken": "./cadence/contracts/standards/ExampleToken.cdc",
 		"FTProviderFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/FTProviderFactory.cdc",
 			"aliases": {
@@ -148,8 +152,7 @@
 				"FTProviderFactory",
 				"NFTProviderFactory",
 				"NFTProviderAndCollectionFactory",
-				"NFTCollectionPublicFactory",
-				"ExampleToken"
+				"NFTCollectionPublicFactory"
 			]
 		}
 	}
