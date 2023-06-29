@@ -1,14 +1,19 @@
 import "CapabilityDelegator"
+import "HybridCustody"
 
 import "NonFungibleToken"
 import "ExampleNFT"
 
-pub fun main(address: Address): Bool {
-    let delegator = getAccount(address).getCapability<&{CapabilityDelegator.GetterPublic}>(CapabilityDelegator.PublicPath).borrow()
+pub fun main(parentAddress: Address, childAddress: Address): [Capability] {
+    // Derive the Delegator path based on parent Address
+    let delegatorPublicPath = PublicPath(
+            identifier: HybridCustody.getCapabilityDelegatorIdentifier(parentAddress)
+        ) ?? panic("invalid PublicPath")
+    // Get the public Capabilities or panic if Delegator not found
+    return getAccount(childAddress).getCapability<&CapabilityDelegator.Delegator{CapabilityDelegator.GetterPublic}>(
+            delegatorPublicPath
+        ).borrow()
+        ?.getAllPublic()
         ?? panic("delegator not found")
-    let publicCaps: [Capability] = delegator.getAllPublic()
-    assert(publicCaps.length > 0, message: "no public capabilities found")
-    
-    let desiredType: Type = Type<Capability<&ExampleNFT.Collection{ExampleNFT.ExampleNFTCollectionPublic, NonFungibleToken.CollectionPublic}>>()
-    return publicCaps[0].getType() == desiredType
+
 }
