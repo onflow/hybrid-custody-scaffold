@@ -205,7 +205,7 @@ fts cadence/transactions/flow-token/transfer_flow.cdc e03daebed8ca0615 1000.0
 ## Configure CapabilityFilter & CapabilityFactory Resources
 
 As noted in the full docs, the `HybridCustody` contract supports restricted access delegation. This means developers are
-empowered to define limitations on the level of access a parent account can have on an app-managed Hybrid Custody
+empowered to define limitations on the level of access a parent account can have on app-managed Hybrid Custody
 accounts.
 
 Constructs in `CapabilityFilter` and `CapabilityFactory` contracts are utilized to define and enforce the Capability
@@ -243,7 +243,7 @@ flow transactions send cadence/transactions/dev-setup/setup_nft_filter_and_facto
 
 This transaction sets up an `AllowlistFilter`, enabling access to `ExampleNFT` Collection Capabilities as well as a 
 `Manager` specifying the access pattern so those Capabilities can be returned as castable types. This means that any 
-parent of a child account using these will be able to access the `ExampleNFT` resources in those child accounts.
+parent of a child account using these will only be able to access the `ExampleNFT` resources in those child accounts.
 
 At the end of this, the `dev` account has `CapabilityFilter.AllowAllFilter` and a `CapabilityFactory.Manager` with a
 number of `Factory` implementations configured. We'll use Capabilities on each when we link the `child` and `parent`
@@ -381,11 +381,11 @@ account according to the rules defined in the Filter and accessible by the Facto
 </details>
 
 <details>
-<summary>Multisig</summary>
+<summary>Multi-Signed</summary>
 
-Let's prepare a single multisig transaction that will link the `child ` and `parent` accounts. Note that the parent can
-set a `Filter` of its own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`, but the
-feature might be useful for custodial wallet providers.
+Let's prepare a single multi-signed transaction that will link the `child ` and `parent` accounts. Note that the parent
+can set a `Filter` of its own to prevent access to Capabilities it doesn't want. For our purposes, we'll pass `nil`,
+but the feature might be useful for custodial wallet providers that wish to prevent access to fungible tokens.
 
 First step is to build the transaction:
 
@@ -454,7 +454,7 @@ First we generate a public/private key pair to assign to the account we'll creat
 flow keys generate
 ```
 
-You'll want to copy the public key as an argument and build the following multisig transaction:
+You'll want to copy the public key as an argument and build the following multi-signed transaction:
 
 ```sh
 flow transactions build cadence/transactions/hybrid-custody/onboarding/blockchain_native.cdc \
@@ -539,7 +539,7 @@ using [FlowView](https://emulator.flowview.app/) to see each of the resources pi
 accounts.
 
 As an app developer, you really only need to be concerned with the app-custodied account and the linking process
-(publish & claim or multisig). Once linked, the assets you provide access to in the child account may change, but
+(publish & claim or multi-signed). Once linked, the assets you provide access to in the child account may change, but
 properly installed filter rules will ensure the user's access to underlying storage is restricted.
 
 The great news is that by enabling Hybrid Custody, standard resources used in your app can be leveraged across the whole
