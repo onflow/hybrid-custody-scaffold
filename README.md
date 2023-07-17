@@ -199,8 +199,59 @@ Lastly, we'll want to make sure this account has enough Flow balance to fund new
 1000.0 $FLOW:
 
 ```sh
- fts cadence/transactions/flow-token/transfer_flow.cdc e03daebed8ca0615 1000.0
+fts cadence/transactions/flow-token/transfer_flow.cdc e03daebed8ca0615 1000.0
 ```
+
+## Configure CapabilityFilter & CapabilityFactory Resources
+
+As noted in the full docs, the `HybridCustody` contract supports restricted access delegation. This means developers are
+empowered to define limitations on the level of access a parent account can have on an app-managed Hybrid Custody
+accounts.
+
+Constructs in `CapabilityFilter` and `CapabilityFactory` contracts are utilized to define and enforce the Capability
+Types accessible from linked child accounts. The simplest understanding of their respective roles is that a `Filter`
+resource defines the accessible Types and `Factory` structs define the access pattern to retrieve those Capability Types
+from an account.
+
+For concrete examples of each, see [`AllowlistFilter`](./cadence/contracts/hybrid-custody/CapabilityFilter.cdc) and
+[`NFTCollectionPublicFactory`](./cadence/contracts/hybrid-custody/factories/NFTCollectionPublicFactory.cdc)
+
+> :information_source: To learn more about all these components, see the [Account Model
+section](https://developers.flow.com/concepts/hybrid-custody/guides/account-model) of the full docs.
+
+Before linking the `child` & `parent` accounts, we'll need to first configure the `CapabilityFilter.Filter` and
+`CapabilityFactory.Manager` resources. These will define accessible types and access patterns (respectively) from the
+child account. We'll configure an `AllowlistFilter`, but consider `AllowAllFilter` and `DenylistFilter` as other
+pre-built options if you'd like to enforce restrictions on allowable Types, or you can roll you own!
+
+> :warning: Filters are important as they restrict the scope of access a parent account can have on a child account.
+> Sharing account access comes with technical, business and regulatory risks that devs should be careful to mitigate by
+> scoping access to the minimum necessary ([Principle of Least
+> Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)). The types you include in your filter will
+> vary according to your use case, but most apps will be well served by allowing NFT collection access demonstrated in
+> the following transaction.
+
+For our purposes, we'll configure a `Filter` and `Manager` to enable access to NFT-related Capabilities, and do so in a
+single transaction:
+
+```sh
+flow transactions send cadence/transactions/dev-setup/setup_nft_filter_and_factory_manager.cdc --signer dev \
+    f8d6e0586b0a20c7 \
+    ExampleNFT \
+    --signer dev
+```
+
+This transaction sets up an `AllowlistFilter`, enabling access to `ExampleNFT` Collection Capabilities as well as a 
+`Manager` specifying the access pattern so those Capabilities can be returned as castable types. This means that any 
+parent of a child account using these will be able to access the `ExampleNFT` resources in those child accounts.
+
+At the end of this, the `dev` account has `CapabilityFilter.AllowAllFilter` and a `CapabilityFactory.Manager` with a
+number of `Factory` implementations configured. We'll use Capabilities on each when we link the `child` and `parent`
+accounts.
+
+> :information_source: You can inspect the developer account storage in [FlowView](https://emulator.flowview.app/), a
+> super useful tool! Click on the link and search for the address you want to inspect. At this point, you should see the
+> `AllowAllFilter` and `Manager` resources at their derived paths.
 
 ## Walletless Onboarding
 
@@ -250,14 +301,14 @@ previously.
 
 ```json
 "child": {
-    "address": "0x120e725050340cab",
+    "address": "0x045a1763c93006ca",
     "key": "<GENERATED_PRIVATE_KEY>"
 }
 ```
 
 You did it - you just completed walletless onboarding!
 
-Recall we:
+**Recall we:**
 
 1. Generated a public/private key pair
 1. Submitted a transaction that:
@@ -269,65 +320,6 @@ Recall we:
 The `child` account in this instance would be an app-managed account. Next, we'll simulate the process of your app's
 user creating their own wallet-managed account that will be linked to the account we just created to achieve Hybrid
 Custody. But first we need to prepare the `dev` account.
-
-## Configure CapabilityFilter & CapabilityFactory Resources
-
-As noted in the full docs, the `HybridCustody` contract supports restricted access delegation. This means developers are
-empowered to define limitations on the level of access a parent account can have on an app-managed Hybrid Custody
-accounts.
-
-Constructs in `CapabilityFilter` and `CapabilityFactory` contracts are utilized to define and enforce the Capability
-Types accessible from linked child accounts. The simplest understanding of their respective roles is that a `Filter`
-resource defines the accessible Types and `Factory` structs define the access pattern to retrieve those Capability Types
-from an account.
-
-For concrete examples of each, see [`AllowlistFilter`](./cadence/contracts/hybrid-custody/CapabilityFilter.cdc) and
-[`NFTCollectionPublicFactory`](./cadence/contracts/hybrid-custody/factories/NFTCollectionPublicFactory.cdc)
-
-> :information_source: To learn more about all these components, see the [Account Model
-section](https://developers.flow.com/concepts/hybrid-custody/guides/account-model) of the full docs.
-
-Before linking the `child` & `parent` accounts, we'll need to first configure the `CapabilityFilter.Filter` and
-`CapabilityFactory.Manager` resources. These will define accessible types and access patterns (respectively) from the
-child account. We'll configure an `AllowlistFilter`, but consider `AllowAllFilter` and `DenylistFilter` are other
-pre-built options if you'd like to enforce restrictions on allowable Types, your you can roll you own!
-
-> :warning: Filters are important as they restrict the scope of access a parent account can have on a child account.
-> Sharing account access comes with technical, business and regulatory risks that devs should be careful to mitigate by
-> scoping access to the minimum necessary ([Principle of Least
-> Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)). The types you include in your filter will
-> vary according to your use case, but most apps will be well served by allowing NFT collection access demonstrated in
-> the following transaction.
-
-First, we'll setup the `AllowlistFilter` in our `dev` account:
-
-```sh
-flow transactions send cadence/transactions/filter/allow/setup.cdc --signer dev
-```
-
-Then we'll add the ExampleNFT Collection type to the `AllowlistFilter` we just configured by providing a type identifier:
-
-```sh
-flow transactions send cadence/transactions/filter/allow/add_type_to_list.cdc \
-    A.f8d6e0586b0a20c7.ExampleNFT.Collection \
-    --signer dev
-```
-
-Next, we'll configure a `CapabilityFactory.Manager`. The transaction we're about to run confures a `Manager` and adds a
-number of NFT-related `Factory` implementations. Again, you're encouraged to define constructs that are relevant to your
-use case.
-
-```sh
-flow transactions send cadence/transactions/factory/setup.cdc --signer dev
-```
-
-At the end of this, the `dev` account has `CapabilityFilter.AllowAllFilter` and a `CapabilityFactory.Manager` with a
-number of `Factory` implementations configured. We'll use Capabilities on each when we link the `child` and `parent`
-accounts.
-
-> :information_source: You can inspect the developer account storage in [FlowView](https://emulator.flowview.app/), a
-> super useful tool! Click on the link and search for the address you want to inspect. At this point, you should see the
-> `AllowAllFilter` and `Manager` resources at their derived paths.
 
 ## Create Parent Account
 
@@ -358,27 +350,17 @@ link by first publishing a Capability the parent account later claims.
 > beware that child account metadata is a matter of convenience. Associated metadata is not authenticated or
 > immutable.
 
-Before continuing, the `OwnedAccount` will need to be configured in the app-managed account. Let's do so now,
-associating a `MetadataViews.Display` in the process:
-
-```sh
-flow transactions send cadence/transactions/hybrid-custody/setup_owned_account_with_display.cdc \
-    <NAME> <DESCRIPTION> <THUMBNAIL_URL> \
-    --signer child
-```
-
-Now we can begin linking accounts. Pick your path and follow along:
-
 <details>
 <summary>Publish & Claim</summary>
 
-First, we need to publish an `OwnedAccount` Capability for the parent account to claim, signing here as the child
-account. Provide the `dev` account address as both the factory and filter addresses.
+We can configure any necessary resources (`OwnedAccount`) in the child account while publishing a Capability for the
+parent account. In the process, we'll also make sure a `MetadataViews.Display` is associated with the account. This
+consolidates a number of steps into a single transaction:
 
 ```sh
-flow transactions send cadence/transactions/hybrid-custody/publish_to_parent.cdc \
-  <PARENT_ADDRESS> <FACTORY_ADDRESS> <FILTER_ADDRESS> \
-  --signer child
+flow transactions send cadence/transactions/hybrid-custody/setup_owned_account_with_display_and_publish_to_parent.cdc \
+    120e725050340cab e03daebed8ca0615 e03daebed8ca0615 NAME DESCRIPTION THUMBNAIL_URL \
+    --signer child
 ```
 
 Once published, we sign with the parent account to claim the Capability. Note that the parent can set a `Filter` of its
@@ -389,7 +371,7 @@ Let's now run the transaction, signing as the `parent` account to claim the
 
 ```sh
 flow transactions send cadence/transactions/hybrid-custody/redeem_account.cdc \
-    <CHILD_ADDRESS> <FILTER_ADDRESS?> <FILTER_PATH?> \
+    045a1763c93006ca nil nil \
     --signer parent
 ```
 
@@ -440,8 +422,15 @@ We can validate that the accounts have been linked by running a quick script ret
 accounts.
 
 ```sh
-flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc <PARENT_ADDRESS>
+flow scripts execute cadence/scripts/hybrid-custody/get_child_addresses.cdc 120e725050340cab
 ```
+
+On the other end of the link, we can get the parent addresses of a child account:
+
+```sh
+flow scripts execute cadence/scripts/hybrid-custody/get_parents_from_child.cdc 045a1763c93006ca
+```
+
 
 ## Blockchain-Native Onboarding
 
