@@ -51,7 +51,7 @@
 			}
 		},
 		"FlowToken": {
-			"source": "",
+			"source": "./cadence/contracts/standards/FlowToken.cdc",
 			"aliases": {
 				"emulator": "0ae53cb6e3f42a79",
 				"mainnet": "1654653399040a61",
@@ -59,7 +59,7 @@
 			}
 		},
 		"FungibleToken": {
-			"source": "",
+			"source": "./cadence/contracts/standards/FungibleToken.cdc",
 			"aliases": {
 				"emulator": "ee82856bf20e2aa6",
 				"mainnet": "f233dcee88fe0abe",
@@ -137,18 +137,29 @@
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
 			"key": "686779d775e5fcbf8d2f4a85cb4c53525d02b7ef53230d180fc16f35d9b7d025"
+		},
+		"emulator-ft": {
+			"address": "ee82856bf20e2aa6",
+			"key": "686779d775e5fcbf8d2f4a85cb4c53525d02b7ef53230d180fc16f35d9b7d025"
 		}
 	},
 	"deployments": {
 		"emulator": {
+			"emulator-ft": [
+				"FungibleToken"
+			],
 			"emulator-account": [
+				"NonFungibleToken",
+				"MetadataViews",
+				"ViewResolver",
+				"ExampleNFT",
 				"AddressUtils",
 				"StringUtils",
 				"ArrayUtils",
-				"HybridCustody",
 				"CapabilityDelegator",
 				"CapabilityFilter",
 				"CapabilityFactory",
+				"HybridCustody",
 				"FTProviderFactory",
 				"NFTProviderFactory",
 				"NFTProviderAndCollectionFactory",
