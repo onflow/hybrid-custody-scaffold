@@ -58,7 +58,7 @@ Your project comes with some standard folders which have a special purpose:
 
 # 🤔 What is Hybrid Custody?
 
-> :books: Read the full docs at [developers.flow.com/hybrid-custody](https://developers.flow.com/concepts/hybrid-custody)
+> :books: Read the full docs [here](https://developers.flow.com/build/advanced-concepts/account-linking)
 
 The Hybrid Custody model on Flow enables developers to provide seamless onboarding and in-app experiences while
 simultaneously empowering users with real ownership and self-sovereignty. With this new custodial model, developers can
@@ -550,3 +550,24 @@ ecosystem while you can focus on delivering stellar in-app experiences!
 - [Full Hybrid Custody docs](https://developers.flow.com/concepts/hybrid-custody)
 - [Full Hybrid Custody repo](https://github.com/onflow/hybrid-custody)
 - [#hybrid-custody Discord channel](https://discord.com/channels/613813861610684416/1087374662100602920)
+
+## Deployment Details
+
+| Network | Address                                                                              |
+| ------- | ------------------------------------------------------------------------------------ |
+| Testnet | [0x294e44e1ec6993c6](https://testnet.contractbrowser.com/account/0x294e44e1ec6993c6) |
+| Mainnet | [0xd8a7e05a7ac670c0](https://contractbrowser.com/account/0xd8a7e05a7ac670c0) |
+
+### Hosted `CapabilityFactory` & `CapabilityFilter` Implementations
+
+> :information_source: `CapabilityFactory.Manager` implementations and `CapabilityFilter.AllowAllFilter` have been
+> deployed to the accounts below for generalized use cases to make account linking as easy as possible. These
+> generalized implementations likely cover most use cases, but you'll want to weigh the decision to use them according
+> to your risk tolerance and specific scenario.
+
+| Use Case | Testnet Address                                                                       | Mainnet Address                         |
+| -------- | ------------------------------------------------------------------------------------- | --------------------------------------- |
+| NFT Capability Factories       | [0x1055970ee34ef4dc](https://f.dnz.dev/0x1055970ee34ef4dc/storage/CapabilityFactory_0x294e44e1ec6993c6) | [0xee9ff4f07a2d6dad](https://f.dnz.dev/0xee9ff4f07a2d6dad/storage/CapabilityFactory_0xd8a7e05a7ac670c0) |
+| FT Capability Factories        | [0x08bed9e8508ed20e](https://f.dnz.dev/0x08bed9e8508ed20e/storage/CapabilityFactory_0x294e44e1ec6993c6) | [0x410aa603925923d9](https://f.dnz.dev/0x410aa603925923d9/storage/CapabilityFactory_0xd8a7e05a7ac670c0) |
+| NFT + FT Capability Factories  | [0x1b7fa5972fcb8af5](https://f.dnz.dev/0x1b7fa5972fcb8af5/storage/CapabilityFactory_0x294e44e1ec6993c6) | [0x071d382668250606](https://f.dnz.dev/0x071d382668250606/storage/CapabilityFactory_0xd8a7e05a7ac670c0) |
+| AllowAllFilter                 | [0xe2664be06bb0fe62](https://f.dnz.dev/0xe2664be06bb0fe62/storage/CapabilityFilter_0x294e44e1ec6993c6) | [0x78e93a79b05d0d7d](https://f.dnz.dev/0x78e93a79b05d0d7d/storage/CapabilityFilter_0xd8a7e05a7ac670c0)  |
