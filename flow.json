@@ -20,21 +20,24 @@
 			"source": "./cadence/contracts/hybrid-custody/CapabilityDelegator.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"CapabilityFactory": {
 			"source": "./cadence/contracts/hybrid-custody/CapabilityFactory.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"CapabilityFilter": {
 			"source": "./cadence/contracts/hybrid-custody/CapabilityFilter.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"ExampleNFT": {
@@ -43,11 +46,36 @@
 				"emulator": "f8d6e0586b0a20c7"
 			}
 		},
+		"FTAllFactory": {
+			"source": "./cadence/contracts/hybrid-custody/factories/FTAllFactory.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
+			}
+		},
+		"FTBalanceFactory": {
+			"source": "./cadence/contracts/hybrid-custody/factories/FTBalanceFactory.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
+			}
+		},
 		"FTProviderFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/FTProviderFactory.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
+			}
+		},
+		"FTReceiverBalanceFactory": {
+			"source": "./cadence/contracts/hybrid-custody/factories/FTReceiverBalanceFactory.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"FlowToken": {
@@ -70,7 +98,8 @@
 			"source": "./cadence/contracts/hybrid-custody/HybridCustody.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"MetadataViews": {
@@ -85,21 +114,24 @@
 			"source": "./cadence/contracts/hybrid-custody/factories/NFTCollectionPublicFactory.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"NFTProviderAndCollectionFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/NFTProviderAndCollectionFactory.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"NFTProviderFactory": {
 			"source": "./cadence/contracts/hybrid-custody/factories/NFTProviderFactory.cdc",
 			"aliases": {
 				"emulator": "f8d6e0586b0a20c7",
-				"testnet": "96b15ff6dfde11fe"
+				"testnet": "294e44e1ec6993c6",
+				"mainnet": "d8a7e05a7ac670c0"
 			}
 		},
 		"NonFungibleToken": {
@@ -160,7 +192,10 @@
 				"CapabilityFilter",
 				"CapabilityFactory",
 				"HybridCustody",
+				"FTAllFactory",
+				"FTBalanceFactory",
 				"FTProviderFactory",
+				"FTReceiverBalanceFactory",
 				"NFTProviderFactory",
 				"NFTProviderAndCollectionFactory",
 				"NFTCollectionPublicFactory"
